@@ -4,14 +4,14 @@
 
 <img src="https://github.com/tlersa/TS-OSINT/assets/111729973/24e4b2d0-2e16-4992-a833-6dc613555a8c" width="800">
 
-### (للـKALI Linux) أوامر التثبيت
+### (KALI Linux) أوامر التثبيت
 ```
 sudo git clone https://github.com/tlersa/TS-OSINT.git
 cd /home/kali/TS-OSINT/
 python3 TS-OSINT.py
 ```
 
-### أوامر التثبيت (للـTermux)
+### أوامر التثبيت (Termux)
 ```
 pkg install python git
 git clone https://github.com/tlersa/TS-OSINT.git
@@ -147,7 +147,7 @@ python TS-OSINT.py
     - الاستضافة
     - الـIP
     - معلومات الاستضافة
-- خيار [5] Images OSINT : استخراج المعلومات الآتية للصور (بشرط أن تكون الصورة المحددة مصورة من الكاميرا فقط)
+- خيار [5] Images OSINT : استخراج المعلومات الآتية للصور
   - اسم الجهاز الذي صور الصورة
   - تشفير الصورة
   - الـExifOffset
