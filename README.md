@@ -4,11 +4,20 @@
 
 <img src="https://github.com/tlersa/TS-OSINT/assets/111729973/24e4b2d0-2e16-4992-a833-6dc613555a8c" width="800">
 
-### أوامر التثبيت
+### (للـKALI Linux) أوامر التثبيت
 ```
 sudo git clone https://github.com/tlersa/TS-OSINT.git
 cd /home/kali/TS-OSINT/
 python3 TS-OSINT.py
+```
+
+### أوامر التثبيت (للـTermux)
+```
+pkg install python git
+git clone https://github.com/tlersa/TS-OSINT.git
+cd TS-OSINT
+pip install -r requirements.txt
+python TS-OSINT.py
 ```
 
 ### المميزات
