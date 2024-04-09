@@ -11,7 +11,7 @@ cd /home/kali/TS-OSINT/
 python3 TS-OSINT.py
 ```
 
-### أوامر التثبيت (Termux)
+### (Termux) أوامر التثبيت
 ```
 pkg install python git
 git clone https://github.com/tlersa/TS-OSINT.git
