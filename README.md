@@ -13,7 +13,6 @@ python3 TS-OSINT.py
 
 ### (Termux) أوامر التثبيت
 ```
-pkg install python git
 git clone https://github.com/tlersa/TS-OSINT.git
 cd TS-OSINT
 pip install -r requirements.txt
@@ -181,7 +180,7 @@ python TS-OSINT.py
 ### ملاحظات ⚠️
 - خيار [1] - Dorks و[7] - Search engine قد تواجه بهم مشكلة الـHTTP ERORR 429 وهذه مشكلة طبيعية سببها كثرة الطلبات (Requests) على المواقع، لتجنبها حاول ألا تستخدم هذه الخيارين كثيرا بمدة قصيرة أو استخدمهم أثناء استخدامك لـTOR
 - خيار [2] - Username OSINT منصة Telegram ستحتاج لمعرّف الـAPI والـAPI hash وهذه تحصل عليها من [هنا](https://my.telegram.org/apps)
-- خيار [2] - Username OSINT منصة Telegram و[6] - PhoneNumbers OSINT لا يعمل على KALI Linux
+- خيار [2] - Username OSINT منصة Telegram لا يعمل على KALI Linux بسبب مكتبة telethon.sync المستخدمة
 - خيار [2] - Username OSINT منصة Reddit ستحتاج للـClient ID والـClient secert والـUser agent وهذه تحصل عليها من [هنا](https://www.reddit.com/prefs/apps/)
 - خيار [5] - Images OSINT يجب أن تحدد الصور المصورة من الكاميرا مباشرة فقط
 - خيار [5] - Images OSINT قد تكون المعلومات من (تاريخ التقاط الصورة... ~ رابط موقع تصوير...) غير دقيقة/غير صحيحة وهذا بسبب محتوى الصورة أولا وثانيا من المكتبة PIL المستخدمة
