@@ -2,7 +2,7 @@
 # TS-OSINT (TLER AL-SHAHRANI-OSINT)
 ## أداة (استخبارات المصادر المفتوحة-OSINT (Open-Source Intelligence 
 
-<img src="https://github.com/tlersa/TS-OSINT/assets/111729973/24e4b2d0-2e16-4992-a833-6dc613555a8c" width="800">
+<img src="https://github.com/tlersa/TS-OSINT/assets/111729973/24e4b2d0-2e16-4992-a833-6dc613555a8c" width="1000">
 
 ### (KALI Linux) أوامر التثبيت
 ```
