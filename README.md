@@ -1,7 +1,7 @@
 # TS-OSINT (TLER AL-SHAHRANI-OSINT)
 ## أداة (استخبارات المصادر المفتوحة-OSINT (Open-Source Intelligence 
 
-<img src="https://github.com/tlersa/TS-OSINT/assets/111729973/cbdc3df1-d114-430f-8840-b9afdcda5dfe" width="1000">
+<img src="https://github.com/tlersa/TS-OSINT/assets/111729973/04251ba4-c9a6-49ff-baea-5047d320d09b" width="1000">
 
 ### تثبيت المكاتب
 ```
