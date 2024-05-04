@@ -8,8 +8,7 @@
 pip install requests bs4 telethon.sync praw ipaddress psutil pillow phonenumbers googlesearch-python
 ```
 
-### (Linux, Termux, iSH) أوامر التثبيت
-### بالنسبة للـWindows توجد نسخة .exe
+###  أوامر التثبيت (Linux, Termux, iSH)، بالنسبة للـWindows توجد نسخة .exe
 ```
 sudo git clone https://github.com/tlersa/TS-OSINT.git
 cd TS-OSINT/
