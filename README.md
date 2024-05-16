@@ -6,7 +6,7 @@
 
 ### تثبيت المكاتب
 ```
-pip install requests bs4 telethon praw ipaddress psutil pillow phonenumbers googlesearch-python
+pip install requests praw ipaddress psutil pillow selenium rich phonenumbers bs4 telethon googlesearch-python
 ```
 
 ###  أوامر التثبيت (Linux, Termux, iSH)، بالنسبة للـWindows توجد نسخة .exe
