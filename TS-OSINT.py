@@ -14,7 +14,7 @@ try:
     from phonenumbers import geocoder, carrier, timezone
     from googlesearch import search
 except ModuleNotFoundError:
-    os.system("pip install requests bs4 telethon.sync praw ipaddress psutil pillow phonenumbers googlesearch-python")
+    os.system("pip install requests praw ipaddress psutil pillow selenium rich phonenumbers bs4 telethon googlesearch-python")
    
     os.system("clear")
 
