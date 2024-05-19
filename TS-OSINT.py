@@ -1,5 +1,7 @@
 try:
-    import os, requests, json, time, sys, praw, socket, ipaddress, platform, psutil, subprocess, shutil, PIL.Image, PIL.ExifTags, concurrent.futures
+    import os, requests, json, time, sys, praw, socket, ipaddress, platform, psutil, subprocess, shutil, PIL.Image, PIL.ExifTags, cv2, concurrent.futures, hashlib
+    from PIL import Image
+    from PIL.ExifTags import TAGS, GPSTAGS
     from selenium import webdriver
     from selenium.webdriver.chrome.options import Options
     from selenium.webdriver.common.by import By
@@ -14,7 +16,7 @@ try:
     from phonenumbers import geocoder, carrier, timezone
     from googlesearch import search
 except ModuleNotFoundError:
-    os.system("pip install requests praw ipaddress psutil pillow selenium rich phonenumbers bs4 telethon googlesearch-python")
+    os.system("pip install requests praw ipaddress psutil pillow opencv-python selenium rich phonenumbers bs4 telethon googlesearch-python")
    
     os.system("clear")
 
@@ -53,53 +55,58 @@ print("""\033[1;34m
 ⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠈⠀⠃⠀⠀⠘⠀⠀⡇⡜⠈⡸⢸⠀⢹⢸⠈⢆⠁⠀⢱⠁⠀⢇⠸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠘⠀⠘⠀⠀⢸⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
            
-                        \033[1;37mv1.1.2
+                    \033[1;32mv1.2.2\033[1;37m
 
 THIS TOOL WAS PROGRAMMED BY TLER AL-SHAHRANI.
 PERSONAL WEBSITE : \033[1;34mhttps://tlersa.github.io/tleralshahrani/Index.html""")
 print("\033[1;37m- "*35)
 
 def main_menu():
-    print("""\033[1;37m[\033[1;34m1\033[1;37m] - Dorks
-[\033[1;34m2\033[1;37m] - Search for Username
-[\033[1;34m3\033[1;37m] - Usernames OSINT
-[\033[1;34m4\033[1;37m] - Domains OSINT
-[\033[1;34m5\033[1;37m] - IP's OSINT
-[\033[1;34m6\033[1;37m] - Networks OSINT
-[\033[1;34m7\033[1;37m] - Images OSINT
-[\033[1;34m8\033[1;37m] - PhoneNumbers OSINT
-[\033[1;34m9\033[1;37m] - Search engine
+    print("""\033[1;37m[\033[1;34m01\033[1;37m] - Dorks                  [\033[1;34m11\033[1;37m] - Deep & Dark Web
+[\033[1;34m02\033[1;37m] - Search for Username    [\033[1;34m12\033[1;37m] - Monitor cameras
+[\033[1;34m03\033[1;37m] - Usernames OSINT        [\033[1;34m13\033[1;37m] - WebScraping
+[\033[1;34m04\033[1;37m] - Domains OSINT          [\033[1;34m14\033[1;37m] - Israeli databases \U0001F923
+[\033[1;34m05\033[1;37m] - IP's OSINT             [\033[1;34m15\033[1;37m] - Verify passwords leakage
+[\033[1;34m06\033[1;37m] - Networks OSINT
+[\033[1;34m07\033[1;37m] - Images OSINT            
+[\033[1;34m08\033[1;37m] - PhoneNumbers OSINT
+[\033[1;34m09\033[1;37m] - Search engine
 [\033[1;34m10\033[1;37m] - Ports scan
-[\033[1;34m11\033[1;37m] - Deep & Dark Web
-[\033[1;34m12\033[1;37m] - Monitor cameras
-[\033[1;34m99\033[1;37m] - Exit""")
+
+[\033[1;34m98\033[1;37m] - Report bug
+[\033[1;34m99\033[1;37m] - Help
+[\033[1;34m00\033[1;37m] - Exit""")
 
 def submenu1():
-    print("""\033[1;37m[\033[1;34m1\033[1;37m] - Instagram
-[\033[1;34m2\033[1;37m] - Telegram accs
-[\033[1;34m3\033[1;37m] - TikTok
-[\033[1;34m4\033[1;37m] - Github
-[\033[1;34m5\033[1;37m] - Reddit
-[\033[1;34m6\033[1;37m] - Tellonym
+    print("""\033[1;37m[\033[1;34m01\033[1;37m] - Instagram
+[\033[1;34m02\033[1;37m] - Telegram accs
+[\033[1;34m03\033[1;37m] - TikTok
+[\033[1;34m04\033[1;37m] - Github
+[\033[1;34m05\033[1;37m] - Reddit
+[\033[1;34m06\033[1;37m] - Tellonym
+
 [\033[1;34m99\033[1;37m] - Back""")
 
 def submenu2():
-    print("""\033[1;37m[\033[1;34m1\033[1;37m] - PhoneNumbers OSINT
-[\033[1;34m2\033[1;37m] - Search for the owner of the num by name
+    print("""\033[1;37m[\033[1;34m01\033[1;37m] - PhoneNumbers OSINT
+[\033[1;34m02\033[1;37m] - Search for the owner of the num by name
+
 [\033[1;34m99\033[1;37m] - Back""")
 
 def submenu3():
-    print("""\033[1;37m[\033[1;34m1\033[1;37m] - Networks OSINT
-[\033[1;34m2\033[1;37m] - Show network operations
+    print("""\033[1;37m[\033[1;34m01\033[1;37m] - Networks OSINT
+[\033[1;34m02\033[1;37m] - Show network operations
+
 [\033[1;34m99\033[1;37m] - Back""")
 
 def submenu4():
-    print("""\033[1;37m[\033[1;34m1\033[1;37m] - Cameras around the world
-[\033[1;34m2\033[1;37m] - Cameras of places
+    print("""\033[1;37m[\033[1;34m01\033[1;37m] - Cameras around the world
+[\033[1;34m02\033[1;37m] - Cameras of places
+
 [\033[1;34m99\033[1;37m] - Back""")
 
 def handle_selection(selection):
-    if selection == "1" or selection == "Dorks" or selection == "DORKS" or selection == "dorks":
+    if selection == "1" or selection == "01" or selection == "Dorks" or selection == "DORKS" or selection == "dorks":
         class dorks():
             def __init__(self):
                 self.fristname = None
@@ -230,13 +237,13 @@ def handle_selection(selection):
                 print(f"\n\033[1;37m[\033[1;32m✓\033[1;37m] The results has been saved in \033[1;34m{ os.getcwd()}\Dorks results.txt\033[1;37m")
         dorks()
 
-        another_operation = input("\033[1;37mWould you like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+        another_operation = input("\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
         if another_operation == "Y" or another_operation == "y" or another_operation == "Yes" or another_operation == "yes" or another_operation == "YES": main_menu()
         elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
         else: 
             print("\033[1;31mPlease choose a valid option!\033[1;37m")
             exit()
-    elif selection == "2" or selection == "Search for Username" or selection == "search for username" or selection == "SEARCH FOR USERNAME":
+    elif selection == "2" or selection == "02" or selection == "Search for Username" or selection == "search for username" or selection == "SEARCH FOR USERNAME":
         def search_social_media(username):
             websites = {
                 "FaceBook": f"https://www.facebook.com/public/{username}/",
@@ -332,17 +339,17 @@ def handle_selection(selection):
         elif save_to_file == "N" or save_to_file == "n" or save_to_file == "No" or save_to_file == "no" or save_to_file == "No": exit()
         else: print("\033[1;31mPlease choose a valid option!\033[1;37m")
         
-        another_operation = input("\033[1;37mWould you like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+        another_operation = input("\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
         if another_operation == "Y" or another_operation == "y" or another_operation == "Yes" or another_operation == "yes" or another_operation == "YES": main_menu()
         elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
         else: 
             print("\033[1;31mPlease choose a valid option!\033[1;37m")
             exit()
-    elif selection == "3" or selection == "Usernames OSINT" or selection == "usernames OSINT" or selection == "USERNAMES OSINT" or selection == "usernames osint":
+    elif selection == "3" or selection == "03" or selection == "Usernames OSINT" or selection == "usernames OSINT" or selection == "USERNAMES OSINT" or selection == "usernames osint":
         submenu1()
         user_input = input("Choose : \033[1;34m")
 
-        if user_input == "1" or user_input == "Instagram" or user_input == "instagram" or user_input == "INSTAGRAM" or user_input == "Insta" or user_input == "insta" or user_input == "INSTA":
+        if user_input == "1" or user_input == "01" or user_input == "Instagram" or user_input == "instagram" or user_input == "INSTAGRAM" or user_input == "Insta" or user_input == "insta" or user_input == "INSTA":
             class Insta:
                 def __init__(self, username):
                     self.username = username
@@ -394,13 +401,13 @@ def handle_selection(selection):
             username = input("\033[1;37m[\033[1;34m+\033[1;37m] Enter username target : \033[1;34m@")
             Insta(username)
 
-            another_operation = input("\033[1;37mWould you like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+            another_operation = input("\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
             if another_operation == "Y" or another_operation == "y" or another_operation == "Yes" or another_operation == "yes" or another_operation == "YES": main_menu()
             elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
             else: 
                 print("\033[1;31mPlease choose a valid option!\033[1;37m")
                 exit()
-        elif user_input == "2" or user_input == "Telegram" or user_input == "telegram" or user_input == "TELEGRAM" or user_input == "Tele" or user_input == "TELE" or user_input == "tele":
+        elif user_input == "2" or user_input == "02" or user_input == "Telegram" or user_input == "telegram" or user_input == "TELEGRAM" or user_input == "Tele" or user_input == "TELE" or user_input == "tele":
             api_id = input("\033[1;37m[\033[1;34m+\033[1;37m] - Enter your API ID : \033[1;34m")
             api_hash = input("\033[1;37m[\033[1;34m+\033[1;37m] - Enter your API hash : \033[1;34m")
 
@@ -436,13 +443,13 @@ def handle_selection(selection):
                 import asyncio
                 asyncio.run(main())
 
-            another_operation = input("\033[1;37mWould you like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+            another_operation = input("\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
             if another_operation == "Y" or another_operation == "y" or another_operation == "Yes" or another_operation == "yes" or another_operation == "YES": main_menu()
             elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
             else: 
                 print("\033[1;31mPlease choose a valid option!\033[1;37m")
                 exit()
-        elif user_input == "3" or user_input == "TikTok" or user_input == "TIKTOK" or user_input == "tiktok" or user_input == "Tik" or user_input == "TIK" or user_input == "tik":
+        elif user_input == "3" or user_input == "03" or user_input == "TikTok" or user_input == "TIKTOK" or user_input == "tiktok" or user_input == "Tik" or user_input == "TIK" or user_input == "tik":
             class Tik:
                 def __init__(self, username: str):
                     self.username = username
@@ -583,13 +590,13 @@ def handle_selection(selection):
             time.sleep(3)
             Tik(username)
 
-            another_operation = input("\033[1;37mWould you like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+            another_operation = input("\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
             if another_operation == "Y" or another_operation == "y" or another_operation == "Yes" or another_operation == "yes" or another_operation == "YES": main_menu()
             elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
             else: 
                 print("\033[1;31mPlease choose a valid option!\033[1;37m")
                 exit()
-        elif user_input == "4" or user_input == "GitHub" or user_input == "Github" or user_input == "github" or user_input == "GITHUB":
+        elif user_input == "4" or user_input == "04" or user_input == "GitHub" or user_input == "Github" or user_input == "github" or user_input == "GITHUB":
             class Github:
                 def __init__(self):
                     self.Start()
@@ -634,13 +641,13 @@ def handle_selection(selection):
                 try: Github()
                 except (KeyboardInterrupt, EOFError): pass
 
-            another_operation = input("\033[1;37mWould you like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+            another_operation = input("\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
             if another_operation == "Y" or another_operation == "y" or another_operation == "Yes" or another_operation == "yes" or another_operation == "YES": main_menu()
             elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
             else: 
                 print("\033[1;31mPlease choose a valid option!\033[1;37m")
                 exit()
-        elif user_input == "5" or user_input == "Reddit" or user_input == "REDDIT" or user_input == "reddit":
+        elif user_input == "5" or user_input == "05" or user_input == "Reddit" or user_input == "REDDIT" or user_input == "reddit":
             client_id = input("\033[1;37m[\033[1;34m+\033[1;37m] - Enter your client ID : \033[1;34m")
             client_secret = input("\033[1;37m[\033[1;34m+\033[1;37m] - Enter your client secert : \033[1;34m")
             user_agent = input("\033[1;37m[\033[1;34m+\033[1;37m] - Enter your useragent : \033[1;34m@")
@@ -671,13 +678,13 @@ def handle_selection(selection):
 
             except Exception as e: print(f"\033[1;31mError : {e}!\033[1;37m")
 
-            another_operation = input("\033[1;37mWould you like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+            another_operation = input("\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
             if another_operation == "Y" or another_operation == "y" or another_operation == "Yes" or another_operation == "yes" or another_operation == "YES": main_menu()
             elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
             else: 
                 print("\033[1;31mPlease choose a valid option!\033[1;37m")
                 exit()
-        elif user_input == "6" or user_input == "Tellonym" or user_input == "tellonym" or user_input == "TELLONYM" or user_input == "Tell" or user_input == "TELL" or user_input == "tell":
+        elif user_input == "6" or user_input == "06" or user_input == "Tellonym" or user_input == "tellonym" or user_input == "TELLONYM" or user_input == "Tell" or user_input == "TELL" or user_input == "tell":
             class Tell:
                 def __init__(self, username):
                     self.username = username
@@ -757,7 +764,7 @@ def handle_selection(selection):
 
             Tell(username)
 
-            another_operation = input("\033[1;37mWould you like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+            another_operation = input("\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
             if another_operation == "Y" or another_operation == "y" or another_operation == "Yes" or another_operation == "yes" or another_operation == "YES": main_menu()
             elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
             else:
@@ -767,7 +774,7 @@ def handle_selection(selection):
         else: 
             print("\033[1;31mPlease choose a valid option!")
             exit()
-    elif selection == "4" or selection == "Domains OSINT" or selection == "DOMAINS OSINT" or selection == "domains osint":
+    elif selection == "4" or selection == "04" or selection == "Domains OSINT" or selection == "DOMAINS OSINT" or selection == "domains osint":
         domain = input("\033[1;37m[\033[1;34m+\033[1;37m] - Enter the domain or IP : \033[1;34m")
         
         print("\033[1;37mGetting info...")
@@ -837,13 +844,13 @@ def handle_selection(selection):
             Console().print(table, justify="left")
         domain_info()
 
-        another_operation = input("\033[1;37mWould you like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+        another_operation = input("\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
         if another_operation == "Y" or another_operation == "y" or another_operation == "Yes" or another_operation == "yes" or another_operation == "YES": main_menu()
         elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
         else:
             print("\033[1;31mPlease choose a valid option!\033[1;37m")
             exit()
-    elif selection == "5" or selection == "IP's OSINT" or selection == "IP'S OSINT" or selection == "ip's osint":
+    elif selection == "5" or selection == "05" or selection == "IP's OSINT" or selection == "IP'S OSINT" or selection == "ip's osint":
         ip_osint_selections = input("""\033[1;37m[\033[1;34m1\033[1;37m] - Target
 [\033[1;34m2\033[1;37m] - Your device
 Choose : \033[1;34m""")
@@ -876,7 +883,7 @@ Choose : \033[1;34m""")
                 Console().print(table, justify="left")
             except requests.exceptions.ConnectionError: print('\033[1;31mPlease check your connection!')
 
-            another_operation = input("\033[1;37mWould you like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+            another_operation = input("\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
             if another_operation == "Y" or another_operation == "y" or another_operation == "Yes" or another_operation == "yes" or another_operation == "YES": main_menu()
             elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
             else:
@@ -913,17 +920,17 @@ Choose : \033[1;34m""")
 
             Console().print(table, justify="left")
 
-            another_operation = input("\033[1;37mWould you like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+            another_operation = input("\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
             if another_operation == "Y" or another_operation == "y" or another_operation == "Yes" or another_operation == "yes" or another_operation == "YES": main_menu()
             elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
             else:
                 print("\033[1;31mPlease choose a valid option!\033[1;37m")
                 exit()
-    elif selection == "6" or selection == "Networks OSINT" or selection == "NETWORKS OSINT" or selection == "networks osint":
+    elif selection == "6" or selection == "06" or selection == "Networks OSINT" or selection == "NETWORKS OSINT" or selection == "networks osint":
         submenu3()
         user_input = input("Choose : \033[1;34m")
 
-        if user_input == "1" or user_input == "Networks OSINT" or user_input == "NETWORKS OSINT" or user_input == "networks osint":
+        if user_input == "1" or user_input == "01" or user_input == "Networks OSINT" or user_input == "NETWORKS OSINT" or user_input == "networks osint":
             print("\033[1;37mExtracting info...")
             time.sleep(3)
             print("\n[ Get info for networks ]")
@@ -967,13 +974,13 @@ Choose : \033[1;34m""")
                 else: print("\033[1;31mOSINT cannot be done because your operating system is unknown!\033[1;37m")
             print(check_os())
 
-            another_operation = input("\033[1;37mWould you like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+            another_operation = input("\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
             if another_operation == "Y" or another_operation == "y" or another_operation == "Yes" or another_operation == "yes" or another_operation == "YES": main_menu()
             elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
             else:
                 print("\033[1;31mPlease choose a valid option!\033[1;37m")
                 exit()
-        elif user_input == "2" or user_input == "Show network operations" or user_input == "SHOW NETWORK OPERATIONS" or user_input == "show network operations":
+        elif user_input == "2" or user_input == "02" or user_input == "Show network operations" or user_input == "SHOW NETWORK OPERATIONS" or user_input == "show network operations":
             print("\033[1;37mExtracting network operations...")
             time.sleep(3)
             print("\n[ Get network operations ]")
@@ -983,7 +990,7 @@ Choose : \033[1;34m""")
             os.system("netstat")
             print("\033[1;37m")
 
-            another_operation = input("\033[1;37mWould you like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+            another_operation = input("\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
             if another_operation == "Y" or another_operation == "y" or another_operation == "Yes" or another_operation == "yes" or another_operation == "YES": main_menu()
             elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
             else:
@@ -991,45 +998,45 @@ Choose : \033[1;34m""")
                 exit()
         elif user_input == "99" or user_input == "Back" or user_input == "BACK" or user_input == "back": main_menu()
         else: print("\033[1;31mPlease choose a valid option!")
-    elif selection == "7" or selection == "Images OSINT" or selection == "IMAGES OSINT" or selection == "images osint":
+    elif selection == "7" or selection == "07" or selection == "Images OSINT" or selection == "IMAGES OSINT" or selection == "images osint":
         class images:
             def __init__(self):
-                try: self.image = PIL.Image.open(str(input("\033[1;37m[\033[1;34m+\033[1;37m] Enter img name or path : \033[1;34m")).replace(" ",""))
+                try: 
+                    self.img_name = str(input("\033[1;37m[\033[1;34m+\033[1;37m] Enter img name or path : \033[1;34m")).replace(" ","")
+                    self.image = Image.open(self.img_name)
+                    self.img_read = cv2.imread(self.img_name)
                 except Exception as e:
                     print(f"\033[1;31m{e}!\033[1;37m")
                     exit()
+
+            def handle_exif_data(self):
+                exif_data = self.image._getexif()
+                if exif_data is not None:
+                    for tag, value in exif_data.items():
+                        tag_name = TAGS.get(tag, tag)
+                        if tag_name == "DateTimeOriginal":
+                            return value
+                return None
+
             def DeviceInfo(self):
-                try: exif = self.image._getexif()
-                except:
-                    print("\033[1;31mNo GPS/Location data exists!\033[1;37m")
-                    exit()
-                if self.image._getexif() is None:
-                    print("\033[1;31mNo GPS/Location data exists!\033[1;37m")
-                    exit()
+                try:  exif = self.image._getexif()
+                except: exit()
+                if self.image._getexif() is None: exit()
                 else:
                     for k, v in self.image._getexif().items():
-                        decoded = PIL.ExifTags.TAGS.get(k, k)
+                        decoded = TAGS.get(k, k)
                         if decoded == "MakerNote": pass
                         elif decoded == "GPSInfo": self.GPSInfo = v
-                        else: print(f"\033[1;37m[\033[1;32m-\033[1;37m] {decoded} : \033[1;34m{v}\033[1;37m")
-            def _convert_to_degress(self,value):
-                try:
-                    d = float(value[0][0])/float(value[0][1])
-                    m = float(value[1][0])/float(value[1][1])
-                    s = float(value[2][0])/float(value[2][1])
-                    return d + (m / 60.0) + (s / 3600.0)
-                except: return None
 
             def GetGeoposition(self):
-                images.DeviceInfo()
+                self.DeviceInfo()
                 gp = self.GPSInfo
                 if self.GPSInfo is None:
-                    print("\033[1;31mNo GPs Info Found!\033[1;37m")
                     return None, None
 
                 gpsinfo = {}
                 for k in gp.keys():
-                    decoded = PIL.ExifTags.GPSTAGS.get(k, k)
+                    decoded = GPSTAGS.get(k, k)
                     gpsinfo[decoded] = gp[k]
                 lat = None
                 lon = None
@@ -1038,44 +1045,54 @@ Choose : \033[1;34m""")
                 gps_longitude = gpsinfo.get("GPSLongitude")
                 gps_longitude_ref = gpsinfo.get("GPSLongitudeRef")
                 if gps_latitude and gps_latitude_ref and gps_longitude and gps_longitude_ref:
-                    lat = images._convert_to_degress(gps_latitude)
+                    lat = self._convert_to_degress(gps_latitude)
                     if gps_latitude_ref != 'N': lat = 0 - lat
-                    lon = images._convert_to_degress(gps_longitude)
+                    lon = self._convert_to_degress(gps_longitude)
                     if gps_longitude_ref != 'E': lon = 0 - lon
                 self.lat = lat
                 self.lon = lon
                 return True
 
             def LocationInfo(self):
-                if not images.GetGeoposition(): pass
+                if not self.GetGeoposition(): pass
                 else: 
                     headers = { 'User-Agent':'Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1' }
                     response = requests.get(f'https://api.opencagedata.com/geocode/v1/json?q={self.lat}+{self.lon}&key=03c48dae07364cabb7f121d8c1519492&no_annotations=1&language=en', headers=headers)
                     if 'country' not in response.text: pass
                     try:
-                        for info in response.json()['results']:
-                            omponents = info['components']
-                            for key, value in omponents.items():
-                                if key == 'ISO_3166-1_alpha-2': pass
-                                elif key == 'ISO_3166-1_alpha-3': pass
-                                elif key == 'ISO_3166-2': pass
-                                else: print(f"\033[1;37m[\033[1;32m-\033[1;37m] {key} : \033[1;34m{value}\033[1;37m")
-                            print(f"\033[1;37m[\033[1;32m-\033[1;37m] GoogleMap link : \033[1;34mhttp://www.google.com/maps/place/{self.lat},{self.lon}\033[1;37m")
-                    except: pass
-        images = images()
-        images.LocationInfo()
+                        console = Console()
+                        table = Table(title="\033[1;37m")
+                        table.add_column("Pic", no_wrap=True)
+                        table.add_column("Info")
 
-        another_operation = input("\033[1;37mWould you like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+                        for info in response.json()['results']:
+                            date_taken = self.handle_exif_data()
+                            if date_taken is not None: table.add_row("Imagine time", date_taken)
+                            pixels = self.img_read.size
+                            dim = self.img_read.shape
+                            table.add_row("Pixels", str(pixels))
+                            table.add_row("Dimensions", str(dim))
+                            components = info['components']
+                            for key, value in components.items():
+                                if key not in ['ISO_3166-1_alpha-2', 'ISO_3166-1_alpha-3', 'ISO_3166-2']:
+                                    table.add_row(key, str(value))
+                        table.add_row("GoogleMap link", f"http://www.google.com/maps/place/{self.lat},{self.lon}")
+                        console.print(table)
+                    except: pass
+        img = images()
+        img.LocationInfo()
+
+        another_operation = input("\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
         if another_operation == "Y" or another_operation == "y" or another_operation == "Yes" or another_operation == "yes" or another_operation == "YES": main_menu()
         elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
         else:
             print("\033[1;31mPlease choose a valid option!\033[1;37m")
             exit()
-    elif selection == "8" or selection == "PhoneNumbers OSINT" or selection == "PHONENUMBERS OSINT" or selection == "phonenumber osint":
+    elif selection == "8" or selection == "08" or selection == "PhoneNumbers OSINT" or selection == "PHONENUMBERS OSINT" or selection == "phonenumber osint":
         submenu2()
         user_input = input("Choose : \033[1;34m")
 
-        if user_input == "1" or user_input == "PhoneNumber OSINT" or user_input == "PHONENUMBER OSINT" or user_input == "phonenumber osint":
+        if user_input == "1" or user_input == "01" or user_input == "PhoneNumber OSINT" or user_input == "PHONENUMBER OSINT" or user_input == "phonenumber osint":
             PhoneNumber = input("\033[1;37m[\033[1;34m+\033[1;37m] Enter phonenumber (ex: +966500000000) : \033[1;34m")
             
             print("\033[1;37mGetting info...")
@@ -1097,19 +1114,19 @@ Choose : \033[1;34m""")
             table.add_row("ISP", str(isp))
             Console().print(table, justify="left")
 
-            another_operation = input("\033[1;37mWould you like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+            another_operation = input("\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
             if another_operation == "Y" or another_operation == "y" or another_operation == "Yes" or another_operation == "yes" or another_operation == "YES": main_menu()
             elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
             else:
                 print("\033[1;31mPlease choose a valid option!\033[1;37m")
                 exit()
-        elif user_input == "2" or user_input == "Search for the owner of the number by name" or user_input == "SEARCH FOR THE OWNER OF THE NUM BY NAME" or user_input == "search for the owner of the num by name":
+        elif user_input == "2" or user_input == "02" or user_input == "Search for the owner of the number by name" or user_input == "SEARCH FOR THE OWNER OF THE NUM BY NAME" or user_input == "search for the owner of the num by name":
             print(f"""\033[1;37m[\033[1;34m1\033[1;37m] KSA [SA]
 \033[1;37m[\033[1;34m2\033[1;37m] UAE [AE]
 \033[1;37m[\033[1;34m4\033[1;37m] Kuwait [KW]
 \033[1;37m[\033[1;34m3\033[1;37m] Qatar [QA]
 \033[1;37m[\033[1;34m5\033[1;37m] Oman [OM]
-\033[1;37m[\033[1;34m6\033[1;37m] Bahrain [BH] 
+\033[1;37m[\033[1;34m6\033[1;37m] Bahrain [BH]
 \033[1;37m[\033[1;34m7\033[1;37m] Egypt [EG] 
 \033[1;37m[\033[1;34m8\033[1;37m] Iraq [IQ]""")
 
@@ -1144,7 +1161,7 @@ Choose : \033[1;34m""")
                 elif 'No recourd found' in r.text: print("\033[1;31mnothing found for this name!")
             else: print("\033[1;31myour Country not in the list!")
 
-            another_operation = input("\033[1;37mWould you like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+            another_operation = input("\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
             if another_operation == "Y" or another_operation == "y" or another_operation == "Yes" or another_operation == "yes" or another_operation == "YES": main_menu()
             elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
             else:
@@ -1152,7 +1169,7 @@ Choose : \033[1;34m""")
                 exit()
         elif user_input == "99" or user_input == "Back" or user_input == "BACK" or user_input == "back": main_menu()
         else: print("\033[1;31mPlease choose a valid option!")
-    elif selection == "9" or selection == "Search engine" or selection == "SEARCH ENGINE" or selection == "Search engine":
+    elif selection == "9" or selection == "09" or selection == "Search engine" or selection == "SEARCH ENGINE" or selection == "Search engine":
         searchh = input("\033[1;37m[\033[1;34m+\033[1;37m] Enter the thing to search for : \033[1;34m")
         result = input("\033[1;37m[\033[1;34m+\033[1;37m] Enter the num of results : \033[1;34m")
 
@@ -1174,7 +1191,7 @@ Choose : \033[1;34m""")
 
         print(f"\033[1;37m[\033[1;32m✓\033[1;37m] The results has been saved in \033[1;34m{ os.getcwd()}\ESR.txt\033[1;37m")
 
-        another_operation = input("\033[1;37mWould you like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+        another_operation = input("\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
         if another_operation == "Y" or another_operation == "y" or another_operation == "Yes" or another_operation == "yes" or another_operation == "YES": main_menu()
         elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
         else:
@@ -1198,7 +1215,7 @@ Choose : \033[1;34m""")
                     if result is not None: open_ports.append(result)
             return sorted(open_ports)
 
-        ip_input = input("\033[1;37m[\033[1;34m+\033[1;37m] Enter the IP : \033[1;34m")
+        ip_input = input("\033[1;37m[\033[1;34m+\033[1;37m] Enter the target IP : \033[1;34m")
         num_ports = int(input("\033[1;37m[\033[1;34m+\033[1;37m] Entet the num of ports : \033[1;34m"))
         open_ports = scan_ports(ip_input, num_ports)
 
@@ -1215,7 +1232,7 @@ Choose : \033[1;34m""")
 
         print(f"\033[1;37m[\033[1;32m✓\033[1;37m] Open ports : \033[1;33m{open_ports}\033[1;37m")
 
-        another_operation = input("\033[1;37mWould you like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+        another_operation = input("\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
         if another_operation == "Y" or another_operation == "y" or another_operation == "Yes" or another_operation == "yes" or another_operation == "YES": main_menu()
         elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
         else:
@@ -1237,7 +1254,7 @@ Choose : \033[1;34m""")
         table.add_row("-", "-", "Onion Investigator", "Ahmia", "-")
         Console().print(table, justify="left")
 
-        another_operation = input("\033[1;37mWould you like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+        another_operation = input("\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
         if another_operation == "Y" or another_operation == "y" or another_operation == "Yes" or another_operation == "yes" or another_operation == "YES": main_menu()
         elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
         else:
@@ -1335,7 +1352,7 @@ Choose : \033[1;34m""")
                     monitor_cameras_world()
             monitor_cameras_world()
 
-            another_operation = input("\n\033[1;37mWould you like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+            another_operation = input("\n\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
             if another_operation == "Y" or another_operation == "y" or another_operation == "Yes" or another_operation == "yes" or another_operation == "YES": main_menu()
             elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
             else:
@@ -1427,7 +1444,7 @@ Choose : \033[1;34m""")
                             counter += 1
             monitor_cameras_places()
             
-            another_operation = input("\n\033[1;37mWould you like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+            another_operation = input("\n\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
             if another_operation == "Y" or another_operation == "y" or another_operation == "Yes" or another_operation == "yes" or another_operation == "YES": main_menu()
             elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
             else:
@@ -1435,8 +1452,109 @@ Choose : \033[1;34m""")
                 exit()
         elif user_input == "99" or user_input == "Back" or user_input == "BACK" or user_input == "back": main_menu()
         else: print("\033[1;31mPlease choose a valid option!")
-    elif selection == "99" or selection == "Exit" or selection == "exit": exit("\033[1;37m")
-    else: print("\033[1;31mPlease choose a valid option!")
+    elif selection == "13" or selection == "WebScraping" or selection == "WEbSCRAPING" or selection == "webscraping":
+        def extract_links_and_images(url):
+            response = requests.get(url)
+            soup = BeautifulSoup(response.text, 'html.parser')
+            links = [a.get('href') for a in soup.find_all('a', href=True)]
+            image_links = [img.get('src') for img in soup.find_all('img', src=True)]
+            return links, image_links
+
+        url = input("\033[1;37m[\033[1;34m+\033[1;37m] - Enter the target URL : \033[1;34m")
+
+        print("\033[1;37mWebScraping...")
+        time.sleep(3)
+        print(f"\033[1;37m[ WebScraping for \033[1;34m{url} \033[1;37m]\n") 
+
+        links, image_links = extract_links_and_images(url)
+
+        print("\033[1;37mPaths & Links :")
+        for link in links:
+            print(f"    {link}")
+
+        print("\n\033[1;37mImages :")
+        for link in image_links:
+            print(f"    {link}")
+
+        def another_operation(): 
+            ao = input("\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+            if ao == "Y" or ao == "y" or ao == "Yes" or ao == "yes" or ao == "YES": main_menu()
+            elif ao == "N" or ao == "n" or ao == "No" or ao == "no" or ao == "No": exit("\033[1;37m")
+            else:
+                print("\033[1;31mPlease choose a valid option!\033[1;37m")
+                another_operation()
+
+        def download_images(image_links, save_dir):
+            save_images = input("\n\033[1;37mDo u want to save the images? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+            if save_images == "Y" or save_images == "y" or save_images == "Yes" or save_images == "yes" or save_images == "YES": 
+                if not os.path.exists(save_dir): os.makedirs(save_dir)
+
+                for i, link in enumerate(image_links):
+                    if 'http' not in link:
+                        link = url + link
+                    response = requests.get(link)
+                    with open(os.path.join(save_dir, f'img{i}.png'), 'wb') as f:
+                        f.write(response.content)
+                another_operation()
+            elif save_images == "N" or save_images == "n" or save_images == "No" or save_images == "no" or save_images == "No": another_operation()
+            else:
+                print("\033[1;31mPlease choose a valid option!\033[1;37m")
+                download_images(image_links, save_dir)
+        download_images(image_links, "Downloaded images")
+
+    elif selection == "14" or selection == "Israeli databases" or selection == "ISRAELI DATABASES" or selection == "israeli databases":
+        table = Table(title="\n\033[1;37mLeaked Israeli db uploaded to the MediaFire platform.\n")
+        table.add_column("Link")
+        table.add_column("Description")
+        table.add_column("Size")
+        table.add_row("https://www.mediafire.com/file/l4o3yg0nehr0txv/1.csv/file", "Store room db containing 400K+ customers.", "86.6MB")
+        table.add_row("https://www.mediafire.com/file/2is34z1ekkhj2su/2.csv/file", "A commercial db containing 200k+ customers.", "23.2MB")
+        table.add_row("https://www.mediafire.com/file/63ib6s7o4rla335/3.csv/file", "A normal db contains 38K+ person.", "6.69MB")
+        table.add_row("https://www.mediafire.com/file/0ruazdhfg3pib51/Leaks.json/file", "Json file containing info of 521 Israeli companies.", "689KB")
+        Console().print(table, justify="left")
+        
+        another_operation = input("\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+        if another_operation == "Y" or another_operation == "y" or another_operation == "Yes" or another_operation == "yes" or another_operation == "YES": main_menu()
+        elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
+        else:
+            print("\033[1;31mPlease choose a valid option!\033[1;37m")
+            exit()  
+
+    elif selection == "15" or selection == "Verify passwords leakage" or selection == "VERIFY PASSWORDS LEAKAGE" or selection == "verify passwords leakage":
+        def check_password_leak(password):
+            sha1password = hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
+            first5_char, tail = sha1password[:5], sha1password[5:]
+            url = f'https://api.pwnedpasswords.com/range/{first5_char}'
+            response = requests.get(url)
+            hashes = (line.split(':') for line in response.text.splitlines())
+            for h, count in hashes:
+                if h == tail: return f"\033[1;31mThe passwas leaked {count} times!"
+            return "\033[1;32mThe pass isn’t leaked."
+
+        password = input("\033[1;37m[\033[1;34m+\033[1;37m] Enter the pass : \033[1;34m")
+        print(check_password_leak(password))
+
+    elif selection == "98" or selection == "Report bug" or selection == "REPORT BUG" or selection == "rebort bug":
+        print("""\n\033[1;37mContact me through one of my acc
+all my acc : \033[1;34mhttps://tlersa.github.io/tleralshahrani/Index.html#contact""")
+
+        another_operation = input("\n\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+        if another_operation == "Y" or another_operation == "y" or another_operation == "Yes" or another_operation == "yes" or another_operation == "YES": main_menu()
+        elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
+        else:
+            print("\033[1;31mPlease choose a valid option!\033[1;37m")
+            exit()
+
+    elif selection == "99" or selection == "Help" or selection == "HELP" or selection == "help":
+        print("""\n\033[1;37mContact me through one of my acc
+all my acc : \033[1;34mhttps://tlersa.github.io/tleralshahrani/Index.html#contact""")
+
+        another_operation = input("\n\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+        if another_operation == "Y" or another_operation == "y" or another_operation == "Yes" or another_operation == "yes" or another_operation == "YES": main_menu()
+        elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
+        else:
+            print("\033[1;31mPlease choose a valid option!\033[1;37m")
+            exit()
 
 def main():
     main_menu()
