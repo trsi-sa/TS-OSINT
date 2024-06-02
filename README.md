@@ -6,7 +6,7 @@
 
 ### تثبيت المكاتب
 ```
-pip install requests praw ipaddress psutil pillow opencv-python selenium rich phonenumbers bs4 telethon googlesearch-python
+pip install requests praw ipaddress psutil pillow opencv-python selenium rich phonenumbers bs4 telethon googlesearch-python tabulate
 ```
 
 ###  أوامر التثبيت (Linux, Termux, iSH)، بالنسبة للـWindows توجد نسخة .exe
@@ -16,7 +16,7 @@ cd TS-OSINT/
 sudo python3 TS-OSINT.py
 ```
 
-### [نسخة .exe للـWindows](https://t.me/tler_sa/158)
+### [نسخة .exe للـWindows](https://t.me/tler_sa/163)
 
 ### المميزات
 - مجانية ومفتوحة المصدر ✔️
