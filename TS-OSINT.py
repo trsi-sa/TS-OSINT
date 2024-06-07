@@ -69,7 +69,7 @@ def main_menu():
 [\033[1;34m04\033[1;37m] - Domains OSINT          [\033[1;34m14\033[1;37m] - Israeli Databases \U0001F923
 [\033[1;34m05\033[1;37m] - IP's OSINT             [\033[1;34m15\033[1;37m] - Verify Passwords Leakage
 [\033[1;34m06\033[1;37m] - Networks OSINT         [\033[1;34m16\033[1;37m] - Scan Websites For Bugs
-[\033[1;34m07\033[1;37m] - Images OSINT           [\033[1;34m17\033[1;37m] - Get MacAddress 
+[\033[1;34m07\033[1;37m] - Images OSINT           [\033[1;34m17\033[1;37m] - Get MacAddress
 [\033[1;34m08\033[1;37m] - PhoneNumbers OSINT
 [\033[1;34m09\033[1;37m] - Search Engine
 [\033[1;34m10\033[1;37m] - Ports Scan
@@ -80,7 +80,7 @@ def main_menu():
 
 def submenu1():
     print("""\033[1;37m[\033[1;34m01\033[1;37m] - Instagram
-[\033[1;34m02\033[1;37m] - Telegram accs
+[\033[1;34m02\033[1;37m] - Telegram Accs
 [\033[1;34m03\033[1;37m] - TikTok
 [\033[1;34m04\033[1;37m] - Github
 [\033[1;34m05\033[1;37m] - Reddit
@@ -90,7 +90,7 @@ def submenu1():
 
 def submenu2():
     print("""\033[1;37m[\033[1;34m01\033[1;37m] - PhoneNumbers OSINT
-[\033[1;34m02\033[1;37m] - Search for the owner of the num by name
+[\033[1;34m02\033[1;37m] - Search For The Owner Of The PhoneNumber By Name
 
 [\033[1;34m99\033[1;37m] - Back""")
 
