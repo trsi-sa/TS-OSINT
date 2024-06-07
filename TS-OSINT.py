@@ -96,13 +96,13 @@ def submenu2():
 
 def submenu3():
     print("""\033[1;37m[\033[1;34m01\033[1;37m] - Networks OSINT
-[\033[1;34m02\033[1;37m] - Show network operations
+[\033[1;34m02\033[1;37m] - Show Network Operations
 
 [\033[1;34m99\033[1;37m] - Back""")
 
 def submenu4():
-    print("""\033[1;37m[\033[1;34m01\033[1;37m] - Cameras around the world
-[\033[1;34m02\033[1;37m] - Cameras of places
+    print("""\033[1;37m[\033[1;34m01\033[1;37m] - Cameras Around The World
+[\033[1;34m02\033[1;37m] - Cameras Of Places
 
 [\033[1;34m99\033[1;37m] - Back""")
 
