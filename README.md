@@ -2,7 +2,7 @@
 ## أداة تطبيق مفهوم الـOSINT
 ###### OSINT = Open-Source Intelligence | استخبارات مفتوحة المصدر
 
-<img src="https://github.com/tlersa/TS-OSINT/assets/111729973/f598513f-2e49-41f8-b0df-486a33b44753" width="1000">
+<img src="Logo.png" width="1000">
 
 ### تثبيت المكاتب
 ```
